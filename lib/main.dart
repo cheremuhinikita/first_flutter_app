@@ -17,7 +17,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.purple,
       ),
-      home: const MyHomePage(title: 'Hello world'),
+      home: const MyHomePage(title: 'Random number'),
     );
   }
 }
@@ -32,16 +32,19 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  // State widget
   bool _isLoading = false;
   int _value = 0;
+
+  // Services
+  final NumberService _numberService = NumberService();
 
   Future<void> _getRandomValue() async {
     setState(() {
       _isLoading = true;
     });
 
-    final NumberService numberService = NumberService.filled();
-    final int randomInt = await numberService.getRandomInt();
+    final int randomInt = await _numberService.getRandomInt();
 
     setState(() {
       _isLoading = false;
@@ -72,9 +75,13 @@ class _MyHomePageState extends State<MyHomePage> {
           onPressed: _getRandomValue,
           tooltip: 'Random value',
           child: _isLoading
-              ? const CircularProgressIndicator(
-                  color: Colors.white,
-                  semanticsLabel: 'Linear progress indicator',
+              ? const SizedBox(
+                  width: 30.0,
+                  height: 30.0,
+                  child: CircularProgressIndicator(
+                    color: Colors.white,
+                    semanticsLabel: 'Linear progress indicator',
+                  ),
                 )
               : const Icon(Icons.cached)),
     );
